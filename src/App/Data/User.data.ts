@@ -77,15 +77,12 @@ export async function Login(data:IUserLoginDto){
     userFromBb.password
   );
   
-  // console.log("-->: ",userFromBb);
-  // console.log("-->: ",userFromBb.id);
-  // console.log("-->: ",userFromBb.role);
-  
   const payload = {
-    userId: userFromBb.id,
-    userRole: userFromBb.role,
+    id: userFromBb.id,
+    role: userFromBb.role,
   };
-  const token = jwt.sign(payload, jwtSecret as string, { expiresIn: "50m" });
+
+  const token = jwt.sign(payload, jwtSecret as string, { expiresIn: "120m" });
 
   if (checkPassword) {
     const data = {

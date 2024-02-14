@@ -9,7 +9,11 @@ class FileService{
     async getFilePath(req:Request, res:Response){
         const documentFile = req.file;      
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        
+
+        const userRole = req.role;
+
+        console.log("HERE",userRole);
+
         if (!documentFile) {
             console.log(documentFile);
             return res.status(400).send({
@@ -22,9 +26,8 @@ class FileService{
             const fileContent = readFileSync(documentFile.path, 'utf-8');
             const csvContent = parse(fileContent, { columns: true, delimiter: [';'] });
             const usersAdded = []; 
-            let rowCount = 0;
             const errors: { [key: string]: string } = {};
-            console.log(csvContent);
+            let rowCount = 0;
             
             for (const row of csvContent) {
                 const name = row.name;
@@ -42,14 +45,16 @@ class FileService{
                     };
                     await registerUser(userData); 
                 } else {
-                    rowCount+=1;
                     if(!name || name.length < 0 ||  name.trim() === ''){
                         errors["name"] = "el nombre no debe ser vacio";
+                        rowCount+=1;
                     }
                     if(!email || !emailRegex.test(email)){
                         errors["email"] = "El formato del campo 'email' es inválido o está vacío.";
+                        rowCount+=1;
                     }
                     if(age < 0){
+                        rowCount+=1;
                         errors["age"] = "El formato del campo 'age' debe ser mayor a 0.";
                     }
                 }

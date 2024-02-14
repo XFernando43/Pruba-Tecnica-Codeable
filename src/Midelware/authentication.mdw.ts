@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { ApiError } from "./error";
-
 const JWT_SECRET = process.env["JWTSECRET"];
 
+
 declare global {
-    namespace Express {
-      interface Request {
-        id: string;
-        name: string;
-        role?: string;
-      }
+  namespace Express {
+    interface Request {
+      id: string;
+      name: string;
+      role: string;
     }
+  }
 }
 
 export function authenticateHandler(
@@ -27,16 +27,17 @@ export function authenticateHandler(
  
   try {
     const payload = jwt.verify(token, JWT_SECRET as string) as {
-      id:string;
-      role:string;
+      userId:string;
+      userRole:string;
       iat: number;
       exp: number;
     };
     
     console.log("desde el midelware --> ",payload);
 
-    req.id = payload.id;
-    req.role = payload.role;
+    req.id = payload.userId;
+    req.role = payload.userRole;
+
     next();
   } catch (error) {
     return next(new ApiError("No autorizado", 401));
