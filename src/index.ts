@@ -1,5 +1,6 @@
 import { FileRouter } from './App/Routers/File.routes';
 import express from 'express';
+import { UserRouter } from './App/Routers/User.routes';
 import "dotenv/config";
 
 export const app = express();
@@ -15,6 +16,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use('/files',FileRouter);
+app.use('/user',UserRouter);
 
 
 

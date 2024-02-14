@@ -22,27 +22,23 @@ class FileService{
             const fileContent = readFileSync(documentFile.path, 'utf-8');
             const csvContent = parse(fileContent, { columns: true, delimiter: [';'] });
             const usersAdded = []; 
-            // const errorDetails = { count: 0 };
             let rowCount = 0;
             const errors: { [key: string]: string } = {};
             console.log(csvContent);
-
-
             
             for (const row of csvContent) {
                 const name = row.name;
                 const email = row.email;
                 const age = row.age;
                 
-                
-
                 if (email && emailRegex.test(email) && age > 0) {
                     usersAdded.push(row);
                     const userData: UserData = {
                         name: row.name,
                         email: row.email,
                         age: parseInt(row.age) || null,
-                        role: row.role || 'user'
+                        role: row.role || 'user',
+                        password: row.password || null
                     };
                     await registerUser(userData); 
                 } else {
@@ -58,9 +54,7 @@ class FileService{
                     }
                 }
             }
-            
-            console.log(errors);
-    
+
             return res.send({
                 ok: true,
                 message: 'Documento cargado correctamente',

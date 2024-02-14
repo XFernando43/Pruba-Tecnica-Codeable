@@ -4,6 +4,7 @@ export class User {
     email:string;
     age:number | any;
     role:string;
+    password?:string;
 }
 
 export type UserData = Omit<User, "id">;
