@@ -1,5 +1,5 @@
+import { FileRouter } from './App/Routers/File.routes';
 import express from 'express';
-
 import "dotenv/config";
 
 export const app = express();
@@ -14,5 +14,8 @@ app.use((req, res, next) => {
 
 
 app.use(express.json());
+app.use('/files',FileRouter);
+
+
 
 app.listen(port, () => {console.log(`Servidor escuchando en el puerto ${port}`);});
