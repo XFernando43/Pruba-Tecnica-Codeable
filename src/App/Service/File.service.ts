@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import type { UserData } from "../../Domain/Model/user.model";
+import { registerUser } from "../Data/User.data";
 const {readFileSync} = require('fs');
 const { parse } = require('csv-parse/sync')
 
@@ -22,17 +24,25 @@ class FileService{
         for(let columna in csvContent){
             console.log(csvContent[columna]["name"]);
             console.log(csvContent[columna]["email"]);
-            console.log(csvContent[columna]["age"]);
+            console.log(parseInt(csvContent[columna]["age"]));
+
+            const _userData:UserData={
+                name:csvContent[columna]["name"],
+                email:csvContent[columna]["email"],
+                age: parseInt(csvContent[columna]["age"]),
+                role:csvContent[columna]["rol"] || 'user'
+            }
+
+            await registerUser(_userData);
         }
       
-
         return res.send({
             ok:true,
-            message:'documento cargado correctamente'
+            message:'documento cargado correctamente',
+            success:[]
         });
         
     }
-        
 
 }
 
