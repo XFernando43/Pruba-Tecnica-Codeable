@@ -10,6 +10,13 @@ UserRouter.post(
   // ,authorize("admin","user")
   ,User_Controller.Login
 );
+
+UserRouter.patch(
+  "/update/:id"
+  // ,authenticateHandler
+  // ,authorize("admin","user")
+  ,User_Controller.Update
+);
   
 UserRouter.post(
   "/register",

@@ -2,7 +2,7 @@ import "dotenv/config";
 import jwt from 'jsonwebtoken';
 import { query } from '../../Db';
 import type { User, UserData } from '../../Domain/Model/user.model';
-import type { IUserLoginDto } from "../../Domain/Interfaces/IUser.interface";
+import type { IUserLoginDto, IUserUpdateDto } from "../../Domain/Interfaces/IUser.interface";
 const bcrypt = require("bcryptjs");
 const jwtSecret = process.env["JWTSECRET"];
 
@@ -20,7 +20,6 @@ export async function registerUser(data:UserData):Promise<User|string>{
     const queryParams = [ data.name,data.email,data.age,data.role,hashedPassword];
     const result = await query(_query,queryParams);
     return result.rows[0];
-    
   }
 }
 
@@ -30,16 +29,29 @@ export async function getAllUsers():Promise<User[]>{
   return result.rows;
 }
 
-export async function getUserById(id:string):Promise<User>{
-  let _query = `Select* From users where id = ${id}`;
-  const result = await query(_query);
+export async function updateUser(id:string ,data:IUserUpdateDto):Promise<User>{
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+  const _query = `
+      UPDATE users 
+      SET name = $1, age = $2, password = $3
+      WHERE id = $4
+      RETURNING *;
+      `;  
+  const queryParams = [data.name,data.age, hashedPassword,id];
+  const result = await query(_query, queryParams);
   return result.rows[0];
 }
 
-export async function getUserByName(username: string):Promise<User>{
-    const consult = `SELECT * FROM users WHERE name = $1`;
-    const result = await query(consult, [username]);
-    return result.rows[0];
+export async function getUserByName(name: string):Promise<User>{
+  const consult = `SELECT * FROM users WHERE name = $1`;
+  const result = await query(consult, [name]);
+  return result.rows[0];
+}
+
+export async function getUserByEmail(email: string):Promise<User>{
+  const consult = `SELECT * FROM users WHERE email = $1`;
+  const result = await query(consult, [email]);
+  return result.rows[0];
 }
 
 export async function deleteUsername(userId:string):Promise<User>{
@@ -49,8 +61,9 @@ export async function deleteUsername(userId:string):Promise<User>{
 }
 
 export async function Login(data:IUserLoginDto){
-  const userFromBb = await getUserByName(data.email);
+  const userFromBb = await getUserByEmail(data.email);
 
+  console.log(userFromBb);
 
   if(userFromBb === undefined){
     return {
@@ -64,9 +77,9 @@ export async function Login(data:IUserLoginDto){
     userFromBb.password
   );
   
-  console.log("-->: ",userFromBb);
-  console.log("-->: ",userFromBb.id);
-  console.log("-->: ",userFromBb.role);
+  // console.log("-->: ",userFromBb);
+  // console.log("-->: ",userFromBb.id);
+  // console.log("-->: ",userFromBb.role);
   
   const payload = {
     userId: userFromBb.id,
