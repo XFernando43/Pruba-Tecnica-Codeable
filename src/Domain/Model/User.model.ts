@@ -3,7 +3,6 @@ export class User {
     name: string;
     email:string;
     age:string;
-    // password:string;
     role:string;
 }
 

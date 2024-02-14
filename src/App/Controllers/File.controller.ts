@@ -1,15 +1,10 @@
 import { Request, Response } from "express";
-
+import { File_Service } from "../Service/File.service";
 
 class FileController{
 
     pruebaPost(req:Request, res:Response){
-    //    const documentFile = (req as any).file;
-    //    if(!documentFile){
-    //     return res.status(400).send('No se ha enviado ningún archivo');
-    //    }else{
-    //       res.send(`El archivo ${documentFile} se ha subido correctamente.`);
-    //    }
+        File_Service.getFilePath(req,res);
     }
 
     async getTest(req:Request, res:Response){
