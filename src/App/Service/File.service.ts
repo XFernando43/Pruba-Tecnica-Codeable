@@ -21,15 +21,21 @@ class FileService{
         try {
             const fileContent = readFileSync(documentFile.path, 'utf-8');
             const csvContent = parse(fileContent, { columns: true, delimiter: [';'] });
-            
             const usersAdded = []; 
-            const errorDetails = []; 
-            
+            // const errorDetails = { count: 0 };
+            let rowCount = 0;
+            const errors: { [key: string]: string } = {};
             console.log(csvContent);
 
+
+            
             for (const row of csvContent) {
+                const name = row.name;
                 const email = row.email;
                 const age = row.age;
+                
+                
+
                 if (email && emailRegex.test(email) && age > 0) {
                     usersAdded.push(row);
                     const userData: UserData = {
@@ -40,18 +46,34 @@ class FileService{
                     };
                     await registerUser(userData); 
                 } else {
-                    errorDetails.push(row);
+                    rowCount+=1;
+                    if(!name || name.length < 0 ||  name.trim() === ''){
+                        errors["name"] = "el nombre no debe ser vacio";
+                    }
+                    if(!email || !emailRegex.test(email)){
+                        errors["email"] = "El formato del campo 'email' es inválido o está vacío.";
+                    }
+                    if(age < 0){
+                        errors["age"] = "El formato del campo 'age' debe ser mayor a 0.";
+                    }
                 }
-
-
             }
+            
+            console.log(errors);
     
             return res.send({
                 ok: true,
                 message: 'Documento cargado correctamente',
-                success: usersAdded,
-                errors: errorDetails
+                data:{
+                    success: usersAdded,
+                    errors: {
+                        rowCount,
+                        errors
+                    } 
+
+                }
             });
+
         } catch (error) {
             console.error("Error al procesar el archivo:", error);
             return res.status(500).send({
