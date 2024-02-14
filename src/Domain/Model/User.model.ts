@@ -2,7 +2,7 @@ export class User {
     id: number;
     name: string;
     email:string;
-    age:number;
+    age:number | any;
     role:string;
 }
 

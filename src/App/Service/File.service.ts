@@ -8,39 +8,57 @@ class FileService{
 
     async getFilePath(req:Request, res:Response){
         const documentFile = req.file;      
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        
         if (!documentFile) {
             console.log(documentFile);
             return res.status(400).send({
-                ok:false,
-                message:'Documento no enviado correctamente'
+                ok: false,
+                message: 'Documento no enviado correctamente'
             });
         }
-        const fileContent = readFileSync(documentFile?.path,'utf-8');
-        const csvContent = parse(fileContent,{columns:true , delimiter: [';']});
-        
-        console.log(fileContent);
-        console.log(csvContent);
-        
-        for(let columna in csvContent){
-            console.log(csvContent[columna]["name"]);
-            console.log(csvContent[columna]["email"]);
-            console.log(parseInt(csvContent[columna]["age"]));
+    
+        try {
+            const fileContent = readFileSync(documentFile.path, 'utf-8');
+            const csvContent = parse(fileContent, { columns: true, delimiter: [';'] });
+            
+            const usersAdded = []; 
+            const errorDetails = []; 
+            
+            console.log(csvContent);
 
-            const _userData:UserData={
-                name:csvContent[columna]["name"],
-                email:csvContent[columna]["email"],
-                age: parseInt(csvContent[columna]["age"]),
-                role:csvContent[columna]["rol"] || 'user'
+            for (const row of csvContent) {
+                const email = row.email;
+                const age = row.age;
+                if (email && emailRegex.test(email) && age > 0) {
+                    usersAdded.push(row);
+                    const userData: UserData = {
+                        name: row.name,
+                        email: row.email,
+                        age: parseInt(row.age) || null,
+                        role: row.role || 'user'
+                    };
+                    await registerUser(userData); 
+                } else {
+                    errorDetails.push(row);
+                }
+
+
             }
-
-            await registerUser(_userData);
+    
+            return res.send({
+                ok: true,
+                message: 'Documento cargado correctamente',
+                success: usersAdded,
+                errors: errorDetails
+            });
+        } catch (error) {
+            console.error("Error al procesar el archivo:", error);
+            return res.status(500).send({
+                ok: false,
+                message: 'Error al procesar el archivo'
+            });
         }
-      
-        return res.send({
-            ok:true,
-            message:'documento cargado correctamente',
-            success:[]
-        });
         
     }
 
