@@ -10,10 +10,7 @@ class FileService{
         const documentFile = req.file;      
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-        const userRole = req.role;
-
-        console.log("HERE",userRole);
-
+       
         if (!documentFile) {
             console.log(documentFile);
             return res.status(400).send({
