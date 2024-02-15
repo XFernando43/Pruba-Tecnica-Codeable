@@ -12,7 +12,8 @@ export function authorize(...allowedRoles: User["role"][]) {
     if (allowedRoles.includes(role as User["role"])) {
       next();
     } else {
-      next(new ApiError("Acceso denegado funcion solo para usuarios administradores", 403));
+      // next(new ApiError("Acceso denegado funcion solo para usuarios administradores", 403));
+      next(ApiError.response(res,"Acceso denegado funcion solo para usuarios administradores", 403));
     }
     
   };

@@ -19,9 +19,10 @@ export function authenticateHandler(
   next: NextFunction
 ) {
   const token = req.headers.authorization?.split(" ")[1];
-  
+
   if (!token) {
-    return next(new ApiError("No autorizado", 401));
+    // return next(new ApiError("No authenticado", 401));
+    return next(ApiError.response(_res,"Usuario no authenticado",401));
   }
   
   try {
@@ -31,12 +32,9 @@ export function authenticateHandler(
       iat: number;
       exp: number;
     };
-    
-    // console.log("desde el midelware --> ",payload);
 
     req.id = payload.id;
     req.role = payload.role;
-
     next();
   } catch (error) {
     return next(new ApiError("No autorizado", 401));
