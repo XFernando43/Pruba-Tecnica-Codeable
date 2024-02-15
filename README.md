@@ -11,9 +11,11 @@ Este repositorio contiene pruebas unitarias para el proyecto Codeable. Sigue est
 
 ```bash
 npm install
+```
 
 ```bash
 npm run test
+```
 
 ## Usuarios de prueba para probar los endpoints
 
@@ -25,4 +27,4 @@ Este proyecto ya cuenta con usuarios registrados para probar los endpoints solic
 
 "email":"Jorge@gmail.com",
 "password": "Mierdamierda123"
-
+```
