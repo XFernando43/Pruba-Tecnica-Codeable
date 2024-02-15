@@ -1,10 +1,10 @@
 import "dotenv/config";
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 import { query } from '../../Db';
 import type { User, UserData } from '../../Domain/Model/user.model';
-import type { IUserLoginDto, IUserUpdateDto } from "../../Domain/Interfaces/IUser.interface";
+import type { IUserUpdateDto } from "../../Domain/Interfaces/IUser.interface";
 const bcrypt = require("bcryptjs");
-const jwtSecret = process.env["JWTSECRET"];
+// const jwtSecret = process.env["JWTSECRET"];
 
 
 export async function registerUser(data:UserData):Promise<User|string>{
@@ -60,41 +60,41 @@ export async function deleteUsername(userId:string):Promise<User>{
     return result.rows[0];
 }
 
-export async function Login(data:IUserLoginDto){
-  const userFromBb = await getUserByEmail(data.email);
+// export async function Login(data:IUserLoginDto){
+//   const userFromBb = await getUserByEmail(data.email);
 
-  console.log(userFromBb);
+//   console.log(userFromBb);
 
-  if(userFromBb === undefined){
-    return {
-      ok: false,
-      message: "Usuario no encontrado",
-    };
-  }
+//   if(userFromBb === undefined){
+//     return {
+//       ok: false,
+//       message: "Usuario no encontrado",
+//     };
+//   }
 
-  const checkPassword = await bcrypt.compare(
-    data.password,
-    userFromBb.password
-  );
+//   const checkPassword = await bcrypt.compare(
+//     data.password,
+//     userFromBb.password
+//   );
   
-  const payload = {
-    id: userFromBb.id,
-    role: userFromBb.role,
-  };
+//   const payload = {
+//     id: userFromBb.id,
+//     role: userFromBb.role,
+//   };
 
-  const token = jwt.sign(payload, jwtSecret as string, { expiresIn: "120m" });
+//   const token = jwt.sign(payload, jwtSecret as string, { expiresIn: "120m" });
 
-  if (checkPassword) {
-    const data = {
-      ok: true,
-      // user: userFromBb,
-      token: token,
-    };
-    return data;
-  } else {
-    return {
-      ok: false,
-      message: "Error",
-    };
-  }
-}
+//   if (checkPassword) {
+//     const data = {
+//       ok: true,
+//       // user: userFromBb,
+//       token: token,
+//     };
+//     return data;
+//   } else {
+//     return {
+//       ok: false,
+//       message: "Error",
+//     };
+//   }
+// }
