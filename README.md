@@ -1,10 +1,3 @@
-"email":"Fernandorar65@gmail.com",
-"password": "Mierdamierda123"
-
-"email":"Jorge@gmail.com",
-"password": "Mierdamierda123"
-
-
 # Codeable - Prueba Técnica
 
 ## Instrucciones para correr las pruebas unitarias
@@ -21,3 +14,15 @@ npm install
 
 ```bash
 npm run test
+
+## Usuarios de prueba para probar los endpoints
+
+Este proyecto ya cuenta con usuarios registrados para probar los endpoints solicitados
+
+```bash
+"email":"Fernandorar65@gmail.com",
+"password": "Mierdamierda123"
+
+"email":"Jorge@gmail.com",
+"password": "Mierdamierda123"
+
