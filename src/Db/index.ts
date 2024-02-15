@@ -12,15 +12,15 @@ export const pool = new Pool({
 export const query = async (
   text: string,
   params?: (string | number | boolean)[]
-) => {
-  const results = await pool.query(text, params);
-  return results;
-};
-
-export const adminClient = new Client({
-  host: "localhost",
-  port: 5432,
-  database: "Codeable",
-  user: "postgres",
-  password: "123456789",
+  ) => {
+    const results = await pool.query(text, params);
+    return results;
+  };
+  
+  export const adminClient = new Client({
+    host: process.env["DB_HOST"],
+    port: Number(process.env["DBPORT"]),
+    database: process.env["ADMINDATABASE"],
+    user: process.env["USER"],
+    password: process.env["PASSWORD"]
 });

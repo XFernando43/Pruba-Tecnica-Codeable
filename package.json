@@ -8,9 +8,9 @@
     "build": "tsc",
     "start": "node build/index.js",
     "test": "vitest",
-    "db:migrate": "ts-node src/db/scripts/dbMigrate.ts",
-    "db:create": "ts-node src/db/scripts/dbCreate.ts",
-    "db:drop": "ts-node src/db/scripts/dbDrop.ts",
+    "db:migrate": "ts-node src/Db/scripts/dbMigrate.ts",
+    "db:create": "ts-node src/Db/scripts/dbCreate.ts",
+    "db:drop": "ts-node src/Db/scripts/dbDrop.ts",
     "db:reset": "npm run db:drop && npm run db:create && npm run db:migrate up",
     "db:seed": "ts-node src/db/scripts/dbSeed.ts"
   },
@@ -26,7 +26,7 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "pg": "^8.11.3",
-    "umzug": "^3.5.1",
+    "umzug": "^3.7.0",
     "vitest": "^1.2.1",
     "zod": "^3.23.0-canary.20231004T224911"
   },
