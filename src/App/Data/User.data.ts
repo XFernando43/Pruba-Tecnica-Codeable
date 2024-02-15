@@ -87,7 +87,7 @@ export async function Login(data:IUserLoginDto){
   if (checkPassword) {
     const data = {
       ok: true,
-      user: userFromBb,
+      // user: userFromBb,
       token: token,
     };
     return data;
