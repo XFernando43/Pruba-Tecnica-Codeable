@@ -15,6 +15,7 @@ export class ApiError extends Error{
             ok:false,
             message:message
         })
+        return res.end();
     }
 }
 
