@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import type { UserData } from "../../Domain/Model/user.model";
 import { registerUser } from "../Data/User.data";
 const {readFileSync} = require('fs');
+const fs = require('fs');
 const { parse } = require('csv-parse/sync')
 
 class FileService{
@@ -63,7 +64,7 @@ class FileService{
                 }
             }
 
-            readFileSync.unlink(documentFile.path);
+            fs.unlinkSync(documentFile.path);
 
             return res.send({
                 ok: true,
