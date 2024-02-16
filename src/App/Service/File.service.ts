@@ -63,6 +63,8 @@ class FileService{
                 }
             }
 
+            readFileSync.unlink(documentFile.path);
+
             return res.send({
                 ok: true,
                 message: 'Documento cargado correctamente',

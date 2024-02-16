@@ -23,8 +23,8 @@ Este proyecto ya cuenta con usuarios registrados para probar los endpoints solic
 
 ```bash
 "email":"Fernandorar65@gmail.com",
-"password": "Mierdamierda123"
+"password": "CodeableSecret123"
 
 "email":"Jorge@gmail.com",
-"password": "Mierdamierda123"
+"password": "CodeableSecret123"
 ```
